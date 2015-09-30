@@ -8,11 +8,24 @@ public class DiccA {
 		nlenguas = -1;
 	}
 	public void leeDiccA(String f){
-		
+		nlenguas = -1;
+		dicc = new Palabra[10];
 	}
 	public boolean insertaPalabra(Palabra p){
-		
-		return true;
+		if (p != null) {
+			int aparece = -1;
+			for (int i = 0; i < dicc.length && aparece == -1; i++){
+				if (dicc[i] != null && dicc[i].getOrigen().equalsIgnoreCase(p.getOrigen()) == true) aparece = i;
+			}
+			if (aparece != -1){
+				int posLibre = -1;
+				for (int i = 0; i < dicc.length && posLibre == -1; i++){
+					if (dicc[i] != null) posLibre = i;
+				}
+				
+			}
+		}
+		return false;
 	}
 	public boolean borraPalabra(String s){
 		
