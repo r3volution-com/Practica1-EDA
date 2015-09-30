@@ -9,14 +9,18 @@ public class Traduccion {
 	public char getIdioma(){
 		return idioma;
 	}
-	public void setTraduccion(String traduccion){
+	public boolean setTraduccion(String traduccion){
 		int pri = -1;
 		boolean found = false;
 		for (int i = 0; i < traducciones.length; i++){
 			if (traducciones[i] == null && pri < 0) pri = i;
 			if (traducciones[i].compareToIgnoreCase(traduccion) == 0) found = true;
 		}
-		if (pri > 0 && !found) traducciones[pri] = traduccion;
+		if (pri > 0 && !found) {
+			traducciones[pri] = traduccion;
+			return true;
+		}
+		return false;
 	}
 	public void setTraduccion(String[] traduccion){
 		int pri = -1;

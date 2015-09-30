@@ -5,7 +5,7 @@ public class DiccA {
 	private Palabra[] dicc;
 	private Palabra[] diccord;
 	public DiccA() {
-		
+		nlenguas = -1;
 	}
 	public void leeDiccA(String f){
 		

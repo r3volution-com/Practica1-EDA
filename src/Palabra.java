@@ -48,11 +48,19 @@ public class Palabra {
 		return null;
 	}
 	public boolean agregaAcepcion(String s, char l){
-		
-		return true;
+		for (int i = 0; i < trad.length; i++){
+			if (trad[i].getIdioma() == l){
+				return trad[i].setTraduccion(s);
+			}
+		}
+		return false;
 	}
 	public void escribeInfo(){
-		
+		String frase = "";
+		for (int i = 0; i < trad.length; i++){
+			frase += ":"+trad[i].getTraducciones();
+		}
+		System.out.println(origen+frase);
 	}
 	
 }
