@@ -47,6 +47,9 @@ public class Palabra {
 		}
 		return null;
 	}
+	public Traduccion[] getArrayTraducciones(){
+		return trad;
+	}
 	public boolean agregaAcepcion(String s, char l){
 		for (int i = 0; i < trad.length; i++){
 			if (trad[i].getIdioma() == l){
