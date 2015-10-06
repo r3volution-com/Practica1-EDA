@@ -19,6 +19,7 @@ public class Traduccion {
 		}
 		if (pri >= 0 && !found) {
 			traducciones[pri] = traduccion;
+            //System.out.println(pri+" -- "+getTraducciones()+" -- "+idioma);
 			return true;
 		}
 		return false;
@@ -30,13 +31,14 @@ public class Traduccion {
 			if (traducciones[i] == null && pri < 0) pri = i;
 		}
 		if (pri > 0) {
-			for (int i = 0; i > traduccion.length; i++){
+			for (int i = 0; i < traduccion.length; i++){
 				found = false;
 				for (int j = 0; j < traducciones.length; j++){
-					if (traducciones[j].compareToIgnoreCase(traduccion[i]) == 0) found = true;
+					if (traducciones[j] != null && traduccion[i] != null && traducciones[j].compareToIgnoreCase(traduccion[i]) == 0) found = true;
 				}
 				if (pri < traducciones.length && !found){
-					traducciones[pri] = traduccion[i];
+                    // System.out.println(traduccion[i]);
+					if (traduccion[i] != null) traducciones[pri] = traduccion[i];
 					pri++;
 				}
 			}
@@ -52,10 +54,12 @@ public class Traduccion {
 		String newstring = "";
 		for (int i = 0; i < traducciones.length; i++){
 			if (traducciones[i] != null){
+        //System.out.println("SY:"+traducciones[i]);
 				if (i == 0) newstring += traducciones[i];
 				else newstring += "/"+traducciones[i];
 			}
 		}
+        System.out.println(idioma+" : "+newstring);
 		return newstring;
 	}
 }

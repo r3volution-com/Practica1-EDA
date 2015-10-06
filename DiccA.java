@@ -23,11 +23,11 @@ public class DiccA {
 					this.nlenguas = Integer.parseInt(lineaa);
 					this.lenguas = new char[nlenguas];
 					String lenguas = br.readLine();
-					String[] arraylenguas = lenguas.split("[ ]*");
+					String[] arraylenguas = lenguas.split("[ ]");
 					if (arraylenguas != null){
 						for (int i = 0; i< arraylenguas.length && i < nlenguas; i++){
 							if (arraylenguas[i] != null && arraylenguas[i].length() > 0) this.lenguas[i] = arraylenguas[i].charAt(0);
-								//System.out.println("ES: "+arraylenguas[i].charAt(0));
+							//System.out.println(i+" ES: "+arraylenguas[i]);
 						}
 						String linea = br.readLine();
 						String[] palabras;
@@ -37,12 +37,15 @@ public class DiccA {
 								Palabra p = new Palabra(palabras[0], nlenguas);
 								String[] acepciones;
 								for (int i = 1; i < palabras.length; i++){
-									acepciones = palabras[i].split("/");
-									for (int j = 0; j < acepciones.length; j++){
-										p.agregaAcepcion(acepciones[j], this.lenguas[i-1]);
-									}
+                                    if (palabras[i] != null && palabras[i].equals("") == false){
+                                        acepciones = palabras[i].split("/");
+                                        for (int j = 0; j < acepciones.length; j++){
+                                            //System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
+                                            if (p.agregaAcepcion(acepciones[j], this.lenguas[i-1]) == false) {System.out.println("hola");}
+                                        }
+                                    }
 								}
-								insertaPalabra(p);
+								if (insertaPalabra(p)) {}
 							}
 							linea = br.readLine();
 						}
@@ -99,17 +102,23 @@ public class DiccA {
 					dicc[posLibre] = p;
 					diccord[posLibreOrd] = p;
 					reordenaArray(diccord);
+                    return true;
 				} else {
 					posLibre = redimensionaArrays();
 					//System.out.println("ES "+dicc.length+" "+posLibre);
 					dicc[posLibre] = p;
 					diccord[posLibre] = p;
 					reordenaArray(diccord);
+                    return true;
 				}
 			} else {
 				Traduccion[] tr = p.getArrayTraducciones();
 				for (int i = 0; i<tr.length;i++){
-					if (tr[i] != null && dicc[aparece] != null) dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+					if (tr[i] != null && dicc[aparece] != null) {
+                        //System.out.println(tr[i].getTraducciones());
+                        dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+                        return true;
+                    }
 				}
 			}
 		}

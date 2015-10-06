@@ -53,21 +53,27 @@ public class Palabra {
 	public boolean agregaAcepcion(String s, char l){
 		int aparece = -1;
 		int posLibre = -1;
-		for (int i = 0; i < trad.length && aparece == -1; i++){
-			if (trad[i] != null && trad[i].getIdioma() == l) aparece = i;
-		}
-		for (int i = 0; i < trad.length && posLibre == -1; i++){
-			if (trad[i] == null) posLibre = i;
-		}
-		if (aparece == -1 && posLibre != -1){
-			trad[posLibre] = new Traduccion(l);
-		}
-		for (int i = 0; i < trad.length; i++){
-			if (trad[i] != null && trad[i].getIdioma() == l){
-				return trad[i].setTraduccion(s);
-			}
-		}
-		return false;
+        if (s != null){
+            for (int i = 0; i < trad.length && aparece == -1; i++){
+                if (trad[i] != null && trad[i].getIdioma() == l) {
+                    aparece = i;
+                }
+            }
+            for (int i = 0; i < trad.length && posLibre == -1; i++){
+                if (trad[i] == null) posLibre = i;
+            }
+            if (aparece == -1 && posLibre != -1){
+                trad[posLibre] = new Traduccion(l);
+            }
+            for (int i = 0; i < trad.length; i++){
+                if (trad[i] != null && trad[i].getIdioma() == l){
+                    boolean ret = trad[i].setTraduccion(s);
+                    //System.out.println(ret+" - "+this.getOrigen()+" - "+s+" - "+trad[i].getIdioma()+" - "+trad[i].getTraducciones());
+                    return ret;
+                }
+            }
+        }
+        return false;
 	}
 	public void escribeInfo(){
 		String frase = "";
@@ -79,7 +85,7 @@ public class Palabra {
 	public void escribeInfo(char l){
 		String frase = "";
 		for (int i = 0; i < trad.length; i++){
-			if (trad[i] != null && trad[i].getIdioma() == l) frase += ":"+trad[i].getTraducciones();
+			//if (trad[i] != null && trad[i].getIdioma() == l) frase += ":"+trad[i].getTraducciones();
 		}
 		System.out.println(origen+frase);
 	}
