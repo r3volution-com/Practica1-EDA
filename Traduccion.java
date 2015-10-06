@@ -13,10 +13,11 @@ public class Traduccion {
 		int pri = -1;
 		boolean found = false;
 		for (int i = 0; i < traducciones.length; i++){
-			if (traducciones[i] == null && pri < 0) pri = i;
-			if (traducciones[i].compareToIgnoreCase(traduccion) == 0) found = true;
+			if (traducciones[i] == null){ 
+				if (pri < 0) pri = i;
+			}else if (traducciones[i].compareToIgnoreCase(traduccion) == 0) found = true;
 		}
-		if (pri > 0 && !found) {
+		if (pri >= 0 && !found) {
 			traducciones[pri] = traduccion;
 			return true;
 		}

@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class DiccA {
 	private int nlenguas;
@@ -10,13 +13,72 @@ public class DiccA {
 		diccord = new Palabra[10];
 	}
 	public void leeDiccA(String f){
+		if (f!= null){
+			try {
+				FileReader fr = new FileReader(f);
+				BufferedReader br = new BufferedReader(fr);
+				String lineaa=br.readLine();
+				
+				if(lineaa!=null){
+					this.nlenguas = Integer.parseInt(lineaa);
+					this.lenguas = new char[nlenguas];
+					String lenguas = br.readLine();
+					String[] arraylenguas = lenguas.split("[ ]*");
+					if (arraylenguas != null){
+						for (int i = 0; i< arraylenguas.length && i < nlenguas; i++){
+							if (arraylenguas[i] != null && arraylenguas[i].length() > 0) this.lenguas[i] = arraylenguas[i].charAt(0);
+								//System.out.println("ES: "+arraylenguas[i].charAt(0));
+						}
+						String linea = br.readLine();
+						String[] palabras;
+						while(linea != null) {
+							palabras = linea.split("[ ]*\\*[ ]*");
+							if (palabras[0] != null){
+								Palabra p = new Palabra(palabras[0], nlenguas);
+								String[] acepciones;
+								for (int i = 1; i < palabras.length; i++){
+									acepciones = palabras[i].split("/");
+									for (int j = 0; j < acepciones.length; j++){
+										p.agregaAcepcion(acepciones[j], this.lenguas[i-1]);
+									}
+								}
+								insertaPalabra(p);
+							}
+							linea = br.readLine();
+						}
+					}
+					br.close();
+					fr.close();
+				}
+				
+			} catch (NumberFormatException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 	public int redimensionaArrays(){
-		Palabra[] newdic = new Palabra[dicc.length];
-		Palabra[] newdicord = new Palabra[diccord.length];
+		int oldlength = dicc.length;
+		Palabra[] newdic = new Palabra[dicc.length+10];
+		Palabra[] newdicord = new Palabra[diccord.length+10];
 		System.arraycopy(dicc, 0, newdic, 0, dicc.length );
 		System.arraycopy(diccord, 0, newdicord, 0, diccord.length );
-		return dicc.length+1;
+		dicc = newdic;
+		diccord = newdicord;
+		return oldlength;
+	}
+	public void reordenaArray(Palabra[] olddicc) {
+		Palabra variableauxiliar;
+		for (int i = 0; i<olddicc.length; i++){
+			for (int j = 0; j<olddicc.length; j++){
+				if(olddicc[i] != null && olddicc[i].getOrigen() != null && olddicc[j] != null && olddicc[i].getOrigen().compareToIgnoreCase(olddicc[j].getOrigen())<0){
+                    variableauxiliar=olddicc[i];
+                    olddicc[i]=olddicc[j];
+                    olddicc[j]=variableauxiliar;
+                }
+			}
+		}
 	}
 	public boolean insertaPalabra(Palabra p){
 		if (p != null) {
@@ -24,29 +86,30 @@ public class DiccA {
 			for (int i = 0; i < dicc.length && aparece == -1; i++){
 				if (dicc[i] != null && dicc[i].getOrigen().equalsIgnoreCase(p.getOrigen()) == true) aparece = i;
 			}
-			if (aparece != -1){
+			if (aparece == -1){
 				int posLibre = -1;
 				int posLibreOrd = -1;
 				for (int i = 0; i < dicc.length && posLibre == -1; i++){
-					if (dicc[i] != null) posLibre = i;
+					if (dicc[i] == null) posLibre = i;
 				}
 				for (int i = 0; i < diccord.length && posLibreOrd == -1; i++){
-					if (diccord[i] != null) posLibreOrd = i;
+					if (diccord[i] == null) posLibreOrd = i;
 				}
 				if (posLibre != -1) {
 					dicc[posLibre] = p;
 					diccord[posLibreOrd] = p;
-					//Reordenar array diccord
+					reordenaArray(diccord);
 				} else {
 					posLibre = redimensionaArrays();
+					//System.out.println("ES "+dicc.length+" "+posLibre);
 					dicc[posLibre] = p;
-					diccord[posLibreOrd] = p;
-					//Reordenar array diccord
+					diccord[posLibre] = p;
+					reordenaArray(diccord);
 				}
 			} else {
 				Traduccion[] tr = p.getArrayTraducciones();
 				for (int i = 0; i<tr.length;i++){
-					dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+					if (tr[i] != null && dicc[aparece] != null) dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
 				}
 			}
 		}
@@ -79,8 +142,18 @@ public class DiccA {
 		return -1;
 	}
 	public int busquedaOptima(String s){
-		
-		return 0;
+		if(s!=null){
+			int mitad, min, max;
+			max=diccord.length-1;
+			min = 0;
+			for (int i = 0; i < diccord.length && min <= max; i++){
+				mitad = (min+max)/2;
+				if (diccord[mitad].getOrigen().compareToIgnoreCase(s) == 0) return i;
+				else if (diccord[mitad].getOrigen().compareToIgnoreCase(s) < 0) max = mitad-1;
+				else if (dicc[mitad].getOrigen().compareToIgnoreCase(s) > 0) min = mitad+1;
+			}
+		}
+		return -1;
 	}
 	public String traduce1(String s, char l){
 		for (int i = 0; i< dicc.length; i++){
@@ -99,12 +172,38 @@ public class DiccA {
 		return null;
 	}
 	public void muestraDiccA(int i){
-		
+		if (i == 0){
+			for (int j = 0; j < dicc.length; j++) {
+				if (dicc[j] != null) dicc[j].escribeInfo();
+			}
+		} else if (i == 1){
+			for (int j = 0; j < diccord.length; j++) {
+				if (dicc[j] != null) diccord[j].escribeInfo();
+			}
+		}
 	}
 	public void muestraDiccA(int i, int j){
-		
+		if (j > dicc.length) j = dicc.length;
+		if (i == 0){
+			for (int k = 0; k < j; k++) {
+				if (dicc[k] != null) dicc[k].escribeInfo();
+			}
+		} else if (i == 1){
+			for (int k = 0; k < j; k++) {
+				if (dicc[k] != null) diccord[k].escribeInfo();
+			}
+		}
 	}
 	public void muestraDiccA(int i, int j, char l){
-		
+		if (j > dicc.length) j = dicc.length;
+		if (i == 0){
+			for (int k = 0; k < j; k++) {
+				if (dicc[k] != null) dicc[k].escribeInfo(l);
+			}
+		} else if (i == 1){
+			for (int k = 0; k < j; k++) {
+				if (dicc[k] != null) diccord[k].escribeInfo(l);
+			}
+		}
 	}
 }
