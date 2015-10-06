@@ -40,8 +40,8 @@ public class DiccA {
                                     if (palabras[i] != null && palabras[i].equals("") == false){
                                         acepciones = palabras[i].split("/");
                                         for (int j = 0; j < acepciones.length; j++){
-                                            //System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
-                                            if (p.agregaAcepcion(acepciones[j], this.lenguas[i-1]) == false) {System.out.println("hola");}
+                                            if (palabras[0].equals("upstairs") == true) System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
+                                            if (p.agregaAcepcion(acepciones[j], this.lenguas[i-1]) == false) {}
                                         }
                                     }
 								}

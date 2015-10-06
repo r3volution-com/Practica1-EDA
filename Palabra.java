@@ -8,25 +8,31 @@ public class Palabra {
 		trad = new Traduccion[nl];
 	}
 	public int setTrad(Traduccion t, char l){
-		int i_pos = -1;
+		int aparece = -1;
+        //System.out.println(origen+" "+l+" "+t.getTraducciones());
 		if (t != null){
-			for (int i = 0; i < trad.length; i++){
-				if (trad[i] != null && trad[i].getIdioma() == l && i_pos == -1){
-					i_pos = i;
-					trad[i].setTraduccion(t.getArrayTraducciones());
-				}
-			}
-			if (i_pos == -1){
-				for (int i = 0; i < trad.length; i++){
-					if (trad[i] == null && i_pos == -1){
-						i_pos = i;
-						trad[i] = new Traduccion(l);
-						trad[i].setTraduccion(t.getArrayTraducciones());
-					}
-				}
-			}
+            for (int i = 0; i < trad.length && aparece == -1 ; i++){
+                if (trad[i] != null && trad[i].getIdioma() == l){
+                    aparece = i;
+                }
+            }
+			if (aparece == -1){
+                int primLibre = -1;
+                for (int i = 0; i < trad.length && primLibre == -1; i++){
+                    if (trad[i] == null){
+                        primLibre = i;
+                    }
+                }
+                if (primLibre != -1){
+                    trad[primLibre] = new Traduccion(l);
+                    trad[primLibre].setTraduccion(t.getArrayTraducciones());
+                    aparece = primLibre;
+                }
+			} else {
+                trad[aparece].setTraduccion(t.getArrayTraducciones());
+            }
 		} 
-		return i_pos;
+		return aparece;
 	}
 	public String getOrigen(){
 		return origen;
