@@ -9,6 +9,7 @@ public class Palabra {
 	}
 	public int setTrad(Traduccion t, char l){
 		int aparece = -1;
+		boolean insertado = false;
         //System.out.println(origen+" "+l+" "+t.getTraducciones());
 		if (t != null){
             for (int i = 0; i < trad.length && aparece == -1 ; i++){
@@ -25,13 +26,15 @@ public class Palabra {
                 }
                 if (primLibre != -1){
                     trad[primLibre] = new Traduccion(l);
-                    trad[primLibre].setTraduccion(t.getArrayTraducciones());
+                    insertado = trad[primLibre].setTraduccion(t.getArrayTraducciones());
                     aparece = primLibre;
                 }
 			} else {
-                trad[aparece].setTraduccion(t.getArrayTraducciones());
+                insertado = trad[aparece].setTraduccion(t.getArrayTraducciones());
             }
+			//System.out.println(origen+" "+insertado);
 		} 
+		if (insertado == false) aparece = -1;
 		return aparece;
 	}
 	public String getOrigen(){
@@ -93,5 +96,4 @@ public class Palabra {
 		}
 		System.out.println(origen+frase);
 	}
-	
 }

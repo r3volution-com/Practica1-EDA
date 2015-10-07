@@ -27,7 +27,7 @@ public class DiccA {
 					if (arraylenguas != null){
 						for (int i = 0; i< arraylenguas.length && i < nlenguas; i++){
 							if (arraylenguas[i] != null && arraylenguas[i].length() > 0) this.lenguas[i] = arraylenguas[i].charAt(0);
-							//System.out.println(i+" ES: "+arraylenguas[i]);
+							//System.out.println(lenguas+" - "+i+" ES: "+arraylenguas[i]);
 						}
 						String linea = br.readLine();
 						String[] palabras;
@@ -37,7 +37,7 @@ public class DiccA {
 								Palabra p = new Palabra(palabras[0], nlenguas);
 								String[] acepciones;
 								for (int i = 1; i < palabras.length; i++){
-                                    if (palabras[i] != null && palabras[i].equals("") == false){
+                                    if (palabras[i] != null/* && palabras[i].equals("") == false*/){
                                         acepciones = palabras[i].split("/");
                                         for (int j = 0; j < acepciones.length; j++){
                                             //if (palabras[0].equals("upstairs") == true) System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
@@ -115,13 +115,17 @@ public class DiccA {
 				}
 			} else {
 				Traduccion[] tr = p.getArrayTraducciones();
+				int setTradret = -1;
 				for (int i = 0; i<tr.length;i++){
 					if (tr[i] != null && dicc[aparece] != null) {
-                        dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+						if (setTradret == -1) setTradret = dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+						else dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
+						//System.out.println(p.getOrigen()+" "+setTradret);
                        // debug(p, tr);
                     }
 				}
-                return true;
+                if (setTradret != -1) return true;
+                else return false;
 			}
 		}
 		return false;

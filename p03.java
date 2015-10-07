@@ -1,4 +1,4 @@
-/**
+/** 
 * @author Alicia Garrido Alenda
 *
 * Se crea un objeto de tipo DiccA, se invoca su metodo leeDiccA
