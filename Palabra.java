@@ -70,13 +70,11 @@ public class Palabra {
             }
             if (aparece == -1 && posLibre != -1){
                 trad[posLibre] = new Traduccion(l);
+                aparece = posLibre;
             }
-            for (int i = 0; i < trad.length; i++){
-                if (trad[i] != null && trad[i].getIdioma() == l){
-                    boolean ret = trad[i].setTraduccion(s);
-                    //System.out.println(ret+" - "+this.getOrigen()+" - "+s+" - "+trad[i].getIdioma()+" - "+trad[i].getTraducciones());
-                    return ret;
-                }
+            if (aparece != -1) {
+            	 boolean ret = trad[aparece].setTraduccion(s);
+                 return ret;
             }
         }
         return false;
@@ -91,7 +89,7 @@ public class Palabra {
 	public void escribeInfo(char l){
 		String frase = "";
 		for (int i = 0; i < trad.length; i++){
-			//if (trad[i] != null && trad[i].getIdioma() == l) frase += ":"+trad[i].getTraducciones();
+			if (trad[i] != null && trad[i].getIdioma() == l) frase += ":"+trad[i].getTraducciones();
 		}
 		System.out.println(origen+frase);
 	}

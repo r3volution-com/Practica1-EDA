@@ -40,15 +40,17 @@ public class DiccA {
                                     if (palabras[i] != null && palabras[i].equals("") == false){
                                         acepciones = palabras[i].split("/");
                                         for (int j = 0; j < acepciones.length; j++){
-                                            if (palabras[0].equals("upstairs") == true) System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
+                                            //if (palabras[0].equals("upstairs") == true) System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
                                             if (p.agregaAcepcion(acepciones[j], this.lenguas[i-1]) == false) {}
                                         }
                                     }
 								}
-								if (insertaPalabra(p)) {}
+								if (insertaPalabra(p)) {
+								}
 							}
 							linea = br.readLine();
 						}
+
 					}
 					br.close();
 					fr.close();
@@ -115,14 +117,39 @@ public class DiccA {
 				Traduccion[] tr = p.getArrayTraducciones();
 				for (int i = 0; i<tr.length;i++){
 					if (tr[i] != null && dicc[aparece] != null) {
-                        //System.out.println(tr[i].getTraducciones());
                         dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
-                        return true;
+                       // debug(p, tr);
                     }
 				}
+                return true;
 			}
 		}
 		return false;
+	}
+	public void debug(Palabra p, Traduccion[] tr){
+    	  if (p != null && p.getOrigen().equals("upstairs")) {
+    		  for (int i = 0; i<tr.length; i++){
+    			  if (tr[i] != null) System.out.println("COMPRUEBO - "+tr[i].getTraducciones());
+    		  }
+    		  
+	     	 Traduccion[] trad = p.getArrayTraducciones();
+	     	 //System.out.println(ret+" - "+this.getOrigen()+" - "+s+" - "+trad[aparece].getIdioma()+" - "+trad[aparece].getTraducciones());
+	     	 for (int j = 0; j < trad.length; j++){
+	     		 if (trad[j] != null) System.out.println("INTRODUZCO - "+p.getOrigen()+" - "+trad[j].getIdioma()+" - "+trad[j].getTraducciones());
+	     	 }
+	     	 System.out.println("\n");
+	      }
+	      Palabra[] pal = this.getPalabras();
+	      for (int i = 0; i<pal.length; i++){
+		      if (pal[i] != null && pal[i].getOrigen().equals("upstairs")) {
+		     	 Traduccion[] trad = pal[i].getArrayTraducciones();
+		     	 //System.out.println(ret+" - "+this.getOrigen()+" - "+s+" - "+trad[aparece].getIdioma()+" - "+trad[aparece].getTraducciones());
+		     	 for (int j = 0; j < trad.length; j++){
+		     		 if (trad[j] != null) System.out.println("ESTA DENTRO: "+pal[i].getOrigen()+" - "+trad[j].getIdioma()+" - "+trad[j].getTraducciones());
+		     	 }
+		     	 System.out.println("\n");
+		      }
+	      }
 	}
 	public boolean borraPalabra(String s){
 		if (s != null) {
@@ -214,5 +241,8 @@ public class DiccA {
 				if (dicc[k] != null) diccord[k].escribeInfo(l);
 			}
 		}
+	}
+	public Palabra[] getPalabras() {
+		return dicc;
 	}
 }
