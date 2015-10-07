@@ -37,10 +37,9 @@ public class DiccA {
 								Palabra p = new Palabra(palabras[0], nlenguas);
 								String[] acepciones;
 								for (int i = 1; i < palabras.length; i++){
-                                    if (palabras[i] != null/* && palabras[i].equals("") == false*/){
+                                    if (palabras[i] != null){
                                         acepciones = palabras[i].split("/");
                                         for (int j = 0; j < acepciones.length; j++){
-                                            //if (palabras[0].equals("upstairs") == true) System.out.println((i-1)+" "+this.lenguas[i-1]+" "+acepciones[j]);
                                             if (p.agregaAcepcion(acepciones[j], this.lenguas[i-1]) == false) {}
                                         }
                                     }
@@ -107,7 +106,6 @@ public class DiccA {
                     return true;
 				} else {
 					posLibre = redimensionaArrays();
-					//System.out.println("ES "+dicc.length+" "+posLibre);
 					dicc[posLibre] = p;
 					diccord[posLibre] = p;
 					reordenaArray(diccord);
@@ -120,8 +118,6 @@ public class DiccA {
 					if (tr[i] != null && dicc[aparece] != null) {
 						if (setTradret == -1) setTradret = dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
 						else dicc[aparece].setTrad(tr[i], tr[i].getIdioma());
-						//System.out.println(p.getOrigen()+" "+setTradret);
-                       // debug(p, tr);
                     }
 				}
                 if (setTradret != -1) return true;
@@ -197,7 +193,7 @@ public class DiccA {
 	}
 	public String traduce1(String s, char l){
 		for (int i = 0; i< dicc.length; i++){
-			if (dicc[i].getOrigen().equalsIgnoreCase(s)) {
+			if (dicc[i] != null && dicc[i].getOrigen() != null && s != null && dicc[i].getOrigen().equalsIgnoreCase(s)) {
 				return dicc[i].getTraduccion(l);
 			}
 		}
@@ -205,7 +201,7 @@ public class DiccA {
 	}
 	public String traduce2(String s, char l){
 		for (int i = 0; i< dicc.length; i++){
-			if (dicc[i].getOrigen().equalsIgnoreCase(s)) {
+			if (dicc[i] != null && dicc[i].getOrigen() != null && s != null && dicc[i].getOrigen().equalsIgnoreCase(s)) {
 				return dicc[i].getTraducciones(l);
 			}
 		}
@@ -249,4 +245,7 @@ public class DiccA {
 	public Palabra[] getPalabras() {
 		return dicc;
 	}
+    public char[] getIdiomas() {
+        return lenguas;
+    }
 }

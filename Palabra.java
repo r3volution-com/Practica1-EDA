@@ -10,7 +10,6 @@ public class Palabra {
 	public int setTrad(Traduccion t, char l){
 		int aparece = -1;
 		boolean insertado = false;
-        //System.out.println(origen+" "+l+" "+t.getTraducciones());
 		if (t != null){
             for (int i = 0; i < trad.length && aparece == -1 ; i++){
                 if (trad[i] != null && trad[i].getIdioma() == l){
@@ -32,7 +31,6 @@ public class Palabra {
 			} else {
                 insertado = trad[aparece].setTraduccion(t.getArrayTraducciones());
             }
-			//System.out.println(origen+" "+insertado);
 		} 
 		if (insertado == false) aparece = -1;
 		return aparece;
